@@ -1,0 +1,150 @@
+const TelegramBot = require('node-telegram-bot-api');
+const fs = require('fs');
+
+const token = "8698208586:AAERUHCwqLyWyKvPL1PFoecEfe38DySudRI";
+const bot = new TelegramBot(8698208586:AAERUHCwqLyWyKvPL1PFoecEfe38DySudRI, { polling: true });
+
+let db = JSON.parse(fs.readFileSync('database.json'));
+
+bot.onText(/\/start/, (msg) => {
+    const chatId = msg.chat.id;
+
+    if (!db[chatId]) {
+        db[chatId] = {
+            balance: 0,
+            referrals: 0
+        };
+    }
+
+    fs.writeFileSync('database.json', JSON.stringify(db));
+
+    bot.sendMessage(chatId, 
+        "💸 Welcome!\nEarn money by watching ads 🚀", 
+        {
+            reply_markup: {
+                inline_keyboard: [
+                    [{ text: "▶️ Start Earning", web_app: { url: "https://yourdomain.com/index.html?user=" + chatId } }],
+                    [{ text: "💰 Balance", callback_data: "balance" }]
+                ]
+            }
+        }
+    );
+});
+
+bot.on("callback_query", (query) => {
+    const chatId = query.message.chat.id;
+
+    if (query.data === "balance") {
+        bot.sendMessage(chatId, "Your Balance: " + db[chatId].balance + " ৳");
+    }
+});
+{}
+<!DOCTYPE html>
+<html>
+<head>
+<title>Admin Panel</title>
+</head>
+<body>
+
+<h2>Admin Dashboard</h2>
+
+<button onclick="loadUsers()">Load Users</button>
+
+<ul id="users"></ul>
+
+<script>
+async function loadUsers() {
+    let res = await fetch("database.json");
+    let data = await res.json();
+
+    let list = document.getElementById("users");
+    list.innerHTML = "";
+
+    for (let id in data) {
+        list.innerHTML += `<li>${id} - Balance: ${data[id].balance}</li>`;
+    }
+}
+</script>
+
+</body>
+</html>
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Earn Money</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<https://shorturl.at/FSbdO>
+
+<h2>💸 Watch Ads & Earn</h2>
+
+<p id="balance">Balance: 0 ৳</p>
+
+<button onclick="watchAd()">▶️ Watch Ad</button>
+
+<script src="script.js"></script>
+
+</https://shorturl.at/FSbdO>
+</html>
+let params = new URLSearchParams(window.location.search);
+let user = params.get("user");
+
+let balance = 0;
+
+function watchAd() {
+
+    window.open("https://shorturl.at/aNKWA");
+
+    setTimeout(() => {
+        balance += 2; // প্রতি ad 2 টাকা
+
+        document.getElementById("balance").innerText = "Balance: " + balance + " ৳";
+
+        fetch("https://yourserver.com/update", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ user: user, amount: 2 })
+        });
+
+        alert("✅ Ad watched! Reward added");
+
+    }, 15000); // 15 sec
+}
+<h3>Withdraw</h3>
+
+<input type="text" id="number" placeholder="Bkash/Nagad/Rocket Number">
+<input type="number" id="amount" placeholder="Amount">
+
+<button onclick="withdraw()">Withdraw</button>
+function withdraw() {
+    let number = document.getElementById("number").value;
+    let amount = document.getElementById("amount").value;
+
+    fetch("https://yourserver.com/withdraw", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+            user: user,
+            number: number,
+            amount: amount
+        })
+    });
+
+    alert("Withdraw request sent!");
+}
+bot.onText(/\/start (.+)/, (msg, match) => {
+    let ref = match[1];
+    let user = msg.chat.id;
+
+    if (!db[user]) {
+        db[user] = { balance: 0, referrals: 0 };
+
+        if (db[ref]) {
+            db[ref].balance += 5;
+            db[ref].referrals += 1;
+        }
+    }
+
+    fs.writeFileSync('database.json', JSON.stringify(db));
+});
+
