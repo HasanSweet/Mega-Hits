@@ -1,150 +1,107 @@
-const TelegramBot = require('node-telegram-bot-api');
-const fs = require('fs');
-
-const token = "8698208586:AAERUHCwqLyWyKvPL1PFoecEfe38DySudRI";
-const bot = new TelegramBot(8698208586:AAERUHCwqLyWyKvPL1PFoecEfe38DySudRI, { polling: true });
-
-let db = JSON.parse(fs.readFileSync('database.json'));
-
-bot.onText(/\/start/, (msg) => {
-    const chatId = msg.chat.id;
-
-    if (!db[chatId]) {
-        db[chatId] = {
-            balance: 0,
-            referrals: 0
-        };
-    }
-
-    fs.writeFileSync('database.json', JSON.stringify(db));
-
-    bot.sendMessage(chatId, 
-        "💸 Welcome!\nEarn money by watching ads 🚀", 
-        {
-            reply_markup: {
-                inline_keyboard: [
-                    [{ text: "▶️ Start Earning", web_app: { url: "https://yourdomain.com/index.html?user=" + chatId } }],
-                    [{ text: "💰 Balance", callback_data: "balance" }]
-                ]
-            }
-        }
-    );
-});
-
-bot.on("callback_query", (query) => {
-    const chatId = query.message.chat.id;
-
-    if (query.data === "balance") {
-        bot.sendMessage(chatId, "Your Balance: " + db[chatId].balance + " ৳");
-    }
-});
-{}
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Admin Panel</title>
+  <meta charset="UTF-8">
+  <title>Telegram Earning App</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <style>
+    body {
+      font-family: Arial;
+      background: #0f172a;
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .card {
+      background: #1e293b;
+      padding: 20px;
+      border-radius: 15px;
+      margin-top: 20px;
+    }
+
+    button {
+      padding: 12px 20px;
+      background: #22c55e;
+      border: none;
+      border-radius: 10px;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #16a34a;
+    }
+  </style>
 </head>
+
 <body>
 
-<h2>Admin Dashboard</h2>
+  <h2>💰 Earn Money Bot</h2>
 
-<button onclick="loadUsers()">Load Users</button>
+  <div class="card">
+    <p>👤 User: <span id="username">Loading...</span></p>
+    <p>💵 Balance: <span id="balance">0</span> ৳</p>
+  </div>
 
-<ul id="users"></ul>
+  <div class="card">
+    <h3>🎯 Watch Ads</h3>
+    <button onclick="watchAd()">Watch Ad (15s)</button>
+  </div>
 
-<script>
-async function loadUsers() {
-    let res = await fetch("database.json");
-    let data = await res.json();
+  <div class="card">
+    <h3>👥 Referral</h3>
+    <p>Your Link:</p>
+    <input type="text" id="refLink" readonly style="width:90%;padding:8px;">
+  </div>
 
-    let list = document.getElementById("users");
-    list.innerHTML = "";
+  <script>
+    const tg = window.Telegram.WebApp;
+    tg.expand();
 
-    for (let id in data) {
-        list.innerHTML += `<li>${id} - Balance: ${data[id].balance}</li>`;
+    let user = tg.initDataUnsafe.user;
+
+    document.getElementById("username").innerText =
+      user?.first_name || "Guest";
+
+    let balance = 0;
+
+    function watchAd() {
+      // 👉 Adsterra Smart Link
+      window.open("https://shorturl.at/o5rSr", "_blank");
+
+      setTimeout(() => {
+        balance += 5;
+        document.getElementById("balance").innerText = balance;
+
+        alert("✅ Ad watched! +5৳ added");
+      }, 15000);
     }
-}
-</script>
+
+    // 👉 Referral Link
+    document.getElementById("refLink").value =
+      "https://t.me/megaprofitsbot?start=8012101922"
+
+  </script>
 
 </body>
 </html>
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Earn Money</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<https://shorturl.at/FSbdO>
 
-<h2>💸 Watch Ads & Earn</h2>
 
-<p id="balance">Balance: 0 ৳</p>
+ 
+  
 
-<button onclick="watchAd()">▶️ Watch Ad</button>
 
-<script src="script.js"></script>
 
-</https://shorturl.at/FSbdO>
-</html>
-let params = new URLSearchParams(window.location.search);
-let user = params.get("user");
 
-let balance = 0;
 
-function watchAd() {
 
-    window.open("https://shorturl.at/aNKWA");
+       
 
-    setTimeout(() => {
-        balance += 2; // প্রতি ad 2 টাকা
 
-        document.getElementById("balance").innerText = "Balance: " + balance + " ৳";
-
-        fetch("https://yourserver.com/update", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ user: user, amount: 2 })
-        });
-
-        alert("✅ Ad watched! Reward added");
-
-    }, 15000); // 15 sec
-}
-<h3>Withdraw</h3>
-
-<input type="text" id="number" placeholder="Bkash/Nagad/Rocket Number">
-<input type="number" id="amount" placeholder="Amount">
-
-<button onclick="withdraw()">Withdraw</button>
-function withdraw() {
-    let number = document.getElementById("number").value;
-    let amount = document.getElementById("amount").value;
-
-    fetch("https://yourserver.com/withdraw", {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({
-            user: user,
-            number: number,
-            amount: amount
-        })
-    });
-
-    alert("Withdraw request sent!");
-}
-bot.onText(/\/start (.+)/, (msg, match) => {
-    let ref = match[1];
-    let user = msg.chat.id;
-
-    if (!db[user]) {
-        db[user] = { balance: 0, referrals: 0 };
-
-        if (db[ref]) {
-            db[ref].balance += 5;
-            db[ref].referrals += 1;
-        }
-    }
-
-    fs.writeFileSync('database.json', JSON.stringify(db));
-});
+ 
+ 
 
