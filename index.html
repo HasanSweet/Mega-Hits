@@ -3,9 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <title>Telegram Earning App</title>
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
+
+  <!-- Telegram WebApp Script -->
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
   <style>
     body {
       font-family: Arial;
@@ -15,18 +17,17 @@
       padding: 20px;
     }
 
-    .card {
+    .box {
       background: #1e293b;
       padding: 20px;
-      border-radius: 15px;
-      margin-top: 20px;
+      border-radius: 10px;
     }
 
     button {
       padding: 12px 20px;
-      background: #22c55e;
       border: none;
-      border-radius: 10px;
+      border-radius: 8px;
+      background: #22c55e;
       color: white;
       font-size: 16px;
       cursor: pointer;
@@ -40,57 +41,40 @@
 
 <body>
 
-  <h2>💰 Earn Money Bot</h2>
+  <div class="box">
+    <h2>💸 Earn Money</h2>
+    <p>Click the button & watch ad for 15 seconds</p>
 
-  <div class="card">
-    <p>👤 User: <span id="username">Loading...</span></p>
-    <p>💵 Balance: <span id="balance">0</span> ৳</p>
-  </div>
+    <button onclick="showAd()">Watch Ad</button>
 
-  <div class="card">
-    <h3>🎯 Watch Ads</h3>
-    <button onclick="watchAd()">Watch Ad (15s)</button>
-  </div>
-
-  <div class="card">
-    <h3>👥 Referral</h3>
-    <p>Your Link:</p>
-    <input type="text" id="refLink" readonly style="width:90%;padding:8px;">
+    <p id="8698208586"></p>
   </div>
 
   <script>
-    const tg = window.Telegram.WebApp;
+    const tg = window.megaprofitsbot;
     tg.expand();
 
-    let user = tg.initDataUnsafe.user;
+    function showAd() {
+      document.getElementById("status").innerText = "⏳ Ad is loading...";
 
-    document.getElementById("username").innerText =
-      user?.first_name || "Guest";
+      // 🔴 এখানে আপনার Adsterra Smart Link বসাতে হবে
+      let adLink = "https://ln.run/7sLd8";
 
-    let balance = 0;
+      window.open(adLink, "_blank");
 
-    function watchAd() {
-      // 👉 Adsterra Smart Link
-      window.open("https://consumptionbackwardsentiments.com/nvmu7msuv?key=05ff8546c4170f30486b55149d04bf50", "_blank");
-
+      // 15 sec timer
       setTimeout(() => {
-        balance += 5;
-        document.getElementById("balance").innerText = balance;
+        document.getElementById("status").innerText = "✅ You earned 0.01$";
+        
+        // 🔴 এখানে backend API call করতে হবে (optional)
+        // fetch("https://your-server.com/earn", {method: "POST"});
 
-        alert("✅ Ad watched! +5৳ added");
       }, 15000);
     }
-
-    // 👉 Referral Link
-    document.getElementById("refLink").value =
-      "https://t.me/megaprofitsbot?start=8012101922"
-
   </script>
 
 </body>
 </html>
-
-
  
   
 
